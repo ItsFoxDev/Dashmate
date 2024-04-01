@@ -1,0 +1,23 @@
+@import url('./css/settings.css');
+@import url("./res/fontawesome/all.min.css");
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  margin: auto;
+  max-width: 38rem;
+  padding: 2rem;
+}
+#background{
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  inset:0px;
+}
+#background img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+  inset:0px;
+  z-index:-1;
+}

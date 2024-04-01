@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="index.css" />
+    <script defer src="index.js"></script>
+  </head>
+  <body>
+    <div id="background">
+      <img id="bgimg" src="https://images.unsplash.com/photo-1710761820157-506def8eaa6a">
+    </div>
+
+    <!-- ===== [ Settings menu ] =================== -->
+    <div class="container" id="settingsContainer">
+      <div class="window" id="settingsWindow">
+        <div class="sidebar" id="settingsSidebar">
+          <button onclick="closeSettings()"><i class="fas fa-arrow-left"></i> Back</button>
+          <div>
+            <div class="separator">General</div>
+            <button onclick="switchSetting(this)" class="row active"><i class="fas fa-cog"></i> General</button>
+            <button id="starter" onclick="switchSetting(this)" class="row"><i class="fas fa-image"></i> Wallpaper</button>
+            <button onclick="switchSetting(this)" class="row"><i class="fas fas fa-cloud-sun-rain"></i> Weather</button>
+            <button onclick="switchSetting(this)" class="row"><i class="fas fa-palette"></i> Customization</button>
+            <div class="separator">App</div>
+            <button onclick="switchSetting(this)" class="row"><i class="fas fa-info-circle"></i> App Info</button>
+            <button onclick="switchSetting(this)" class="row"><i class="fas fa-wrench"></i> Debug</button>
+            <button onclick="switchSetting(this)" class="row"><i class="fas fa-sparkles"></i> What's New</button>
+          </div>
+        </div>
+        <!-- ===== [ Menus ] =================== -->
+        <div class="menus" id="settingsMenus">
+          <div class="menu activeMenu" menu="General">
+            <h1>Time/date</h1>
+            <button class="toggle" setting="24hrclock"></button> Use 24-hour clock
+          </div>
+          <div class="menu" menu="Wallpaper">
+            <div id="mainwpmenu">
+              <h1>Categories</h1>
+              <div id="categories">
+                <div onclick="wc('Mountains','mountain')" class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1502085671122-2d218cd434e6?width=400">
+                  <span class="overlay">Mountains</span>
+                </div>
+                <div onclick="wc('Lakes','lake')"  class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1516132006923-6cf348e5dee2?width=400">
+                  <span class="overlay">Lakes</span>
+                </div>
+                <div onclick="wc('Trees','tree')"  class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1500838703623-76f427f7c8a4?width=400">
+                  <span class="overlay">Trees</span>
+                </div>
+                <div onclick="wc('Travel','travel')"  class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1583006479542-4d67993b8d9a?width=400">
+                  <span class="overlay">Travel</span>
+                </div>
+                <div onclick="wc('Textures','textures')"  class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1582687200011-7dc05f8b813e?width=400">
+                  <span class="overlay">Textures</span>
+                </div>
+                <!-- Second row -->
+                <div onclick="wc('Street','street')"  class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1711665093719-ccab5f62ccbf?width=400">
+                  <span class="overlay">Street</span>
+                </div>
+                <div onclick="wc('Dogs','dog')"  class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?width=400">
+                  <span class="overlay">Dogs</span>
+                </div>
+                <div onclick="wc('Cats','cat')"  class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?width=400">
+                  <span class="overlay">Cats</span>
+                </div>
+                <div onclick="wc('Food','food')"  class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?width=400">
+                  <span class="overlay">Food</span>
+                </div>
+                <div onclick="wc('Minimalism','minimalism')"  class="wallcategory">
+                  <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?width=400">
+                  <span class="overlay">Minimalism</span>
+                </div>
+              </div>
+              <h1>Nature <flag>FEATURED</flag></h1>
+              <div class="feed" id="naturefeed"></div>
+              <h1>City <flag>FEATURED</flag></h1>
+              <div class="feed" id="cityfeed"></div>
+            </div>
+            <div id="wpsub" class="hide">
+              <button onclick="document.getElementById('mainwpmenu').classList.remove('hide');this.parentElement.classList.add('hide')"><i class="fas fa-arrow-left"></i> Back</button>
+              <button onclick="document.getElementById('wpsubfeed').innerHTML='';loadUsImages(cc,'wpsubfeed',24);"><i class="fas fa-rotate-right"></i> Refresh</button>
+              <h1 id="wpsubtitle"></h1>
+              <div class="feed" id="wpsubfeed">
+
+              </div>
+            </div>
+          </div>
+          <div class="menu" menu="Weather">
+            <input type="text" setting="weatherloc" placeholder="Toronto"> Weather location 
+            <sinfo>City, Latitude and Longitude, IP address, Canada/US postal code</sinfo>
+          </div>
+          
+          <div class="menu" menu="Customization">
+            <h1>Colour</h1>
+            Theme colour: <input type="color" setting="theme"><br>
+            <button class="toggle" setting="bgcol"></button> Theme affects background<br>
+            <button class="toggle" setting="lightmode"></button> Light mode <flag>DANGER</flag>
+            <h1>Fonts</h1>
+            Interface font: <input type="text" setting="font"><br>
+            Code font: <input type="text" setting="codefont"><br>
+            <button class="toggle" setting="boldfont"></button> Bold font
+            <h1>Texts</h1>
+            <input type="text" setting="windowtitle" oninput="document.title=this.value"> Window title<br>
+            <i class="fas fa-planet-ringed" id="iconpreview"></i> <input type="text" setting="windowicon" oninput=""> Window icon (Font Awesome)<br>
+          </div>
+          <div class="menu" menu="App Info">
+            <h1><i class="fas fa-planet-ringed"></i> Uranium 2.2.3</h1>
+            Electron <flag>29.1.4</flag><br>
+            Chromium <flag>122.0.6261.129</flag>
+            
+            <h1>Packages</h1>
+            ├── @electron-forge/cli@7.3.0<br>
+            ├── @electron-forge/core@7.3.0<br>
+            ├── @electron-forge/maker-deb@7.3.0<br>
+            ├── @electron-forge/maker-rpm@7.3.0<br>
+            ├── @electron-forge/maker-squirrel@7.3.0<br>
+            ├── @electron-forge/maker-zip@7.3.0<br>
+            ├── @electron-forge/plugin-auto-unpack-natives@7.3.0<br>
+            ├── @electron-forge/plugin-fuses@7.3.0<br>
+            ├── @electron/fuses@1.7.0<br>
+            ├── electron-squirrel-startup@1.0.0<br>
+            ├── electron-store@8.2.0<br>
+            ├── electron@29.1.4<br>
+            └── update-electron-app@3.0.0<br>
+          </div>
+          <div class="menu" menu="Debug">
+            <h1>Settings</h1>
+            <button onclick="resetSettings(this);">Reset <flag>DANGER</flag></button>
+            <button onclick="importSettings(this);">Import from file</button>
+            <button onclick="exportFile(JSON.stringify(settings),'Uranium Settings.json');cl('📂 Exported Settings');">Export to file</button>
+            <h1>Logs</h1>
+            <div id="logs">
+              <log>
+                <ic>🪐</ic>
+                <time>uranium.main @ launch</time>
+                <desc>Opening Uranium</desc>
+              </log>
+            </div>
+            <button onclick="exportLogs()">Export Logs</button>
+            <button onclick="cl('🧪 Test log')">Test Log</button>
+            <button class="toggle" setting="autoscroll"></button> Autoscroll
+          </div>
+          <div class="menu" menu="What's New">
+            <h1>Uranium v2</h1>
+            <li>New splash screen</li>
+            <li>Settings menu redesign</li>
+            <li>More icons everywhere</li>
+            <li>New file menu</li>
+            <li>Auto-updates (Finally)</li>
+            <!-- -->
+            <h1>1.4.1</h1>
+            <li>Bug fixes (As always)</li>
+            <li>Fixed a few typos</li>
+            <li>App opens faster now</li>
+            <!-- -->
+            <h1>1.4</h1>
+            <li>New logo</li>
+            <li>New Server menu</li>
+            <li>Updated Electron</li>
+            <li>Custom shell support</li>
+            <!-- -->
+            <h1>1.3</h1>
+            <li>New tab layout</li>
+            <li>Added lifetime purchase option</li>
+            <li>3 new utilities</li>
+            <!-- -->
+            <h1>1.2.2</h1>
+            <li>Added Intel (x64) compatibility</li>
+            <li>Improved smoothness when emulated</li>
+            <!-- -->
+            <h1>1.2.1</h1>
+            <li>Fixed more bugs</li>
+            <li>App opens 30% faster</li>
+            <!-- -->
+            <h1>1.2</h1>
+            <li>Upated Electron</li>
+            <li>New macOS icon</li>
+            <li>Added network camera support
+            </li>
+            <!-- -->
+            <h1>1.1.1</h1>
+            <li>Fixed some bugs</li>
+            <!-- -->
+            <h1>1.1</h1>
+            <li>Added WiFi info</li>
+            <li>Added devices tab</li>
+            <li>Added settings</li>
+            <!-- -->
+            <h1>1.0</h1>
+            <li>First release</li>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+    <div id="darkOverlay"></div>
+  </body>
+</html>
