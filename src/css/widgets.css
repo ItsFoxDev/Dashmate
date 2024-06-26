@@ -1,0 +1,95 @@
+#panel{
+  position:fixed;
+  left:25px;
+  bottom:25px;
+  display:flex;
+  flex-direction:column;
+}
+.time{
+  color:white;
+  font-size:40px;
+  font-weight:bold;
+  display:flex;
+  width: fit-content;
+}
+@keyframes flash{
+  0%{opacity:1;}
+  49%{opacity:1;}
+  50%{opacity:0;}
+  99%{opacity:0;}
+  100%{opacity:1;}
+}
+@keyframes flashsmooth{
+  0%{opacity:1;}
+  50%{opacity:0;}
+  100%{opacity:1;}
+}
+.flash{
+  animation:flash 1s infinite;
+}
+.flashs{
+  animation:flashsmooth 1s infinite;
+}
+tia{
+  margin-left:10px;
+}
+
+#widgets{
+  display:flex;
+  left:0px;
+  
+}
+#widgets > .widget{
+  margin:10px;
+  width:150px;
+  height:30px;
+  padding:10px;
+  grid-template-columns: 35px 1fr;
+  display:grid;
+  border-radius:10px;
+  color:black;
+  background:var(--blurcol);
+  backdrop-filter:blur(10px) saturate(4);
+}
+.widget > img{
+  grid-row-start: span 2;
+  height:30px;
+  width:30px;
+}
+.widget > span{
+  color:var(--text);
+  height:15px;
+  display:flex;
+  align-items: center;
+}
+
+#calendarwidget{
+  padding:10px;
+  height:50px;
+  width:50px;
+  display:grid;
+  grid-template-rows: 3fr 5fr;
+}
+#calendarwidget > div{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+#calendartop{
+  border-radius:10px 10px 0px 0px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgb(182, 0, 0);
+  color:white;
+  font-weight:bold;
+  font-size:13px;
+}
+#calendarbottom{
+  text-align: center;
+  color:black;
+  font-weight:bold;
+  font-size:20px;
+  background:white;
+  border-radius:0px 0px 10px 10px;
+}

@@ -6,11 +6,40 @@
     <link rel="stylesheet" href="index.css" />
     <script defer src="index.js"></script>
   </head>
-  <body>
+  <body class="darkmode">
+    <div id="darkOverlay"></div>
     <div id="background">
       <img id="bgimg" src="https://images.unsplash.com/photo-1710761820157-506def8eaa6a">
     </div>
-
+    <div id="darkGradient"></div>
+    <button id="settingsbutton" onclick="settingsMenu()"><i class="fas fa-cog"></i></button>
+    <div id="panel">
+      <div class="time">
+        <tih>12</tih>
+        <ts>:</ts>
+        <tim>36</tim>
+        <ts id="secsep">:</ts>
+        <tis>13</tis>
+        <tia> PM</tia>
+      </div>
+      <div id="widgets">
+        <div id="calendarwidget">
+          <div id="calendartop">
+            <span id="calmonth">MAY</span>
+          </div>
+          <div id="calendarbottom">
+            <span id="calday">17</span>
+          </div>
+        </div>
+        <div id="weather" class="widget">
+          <img id="weatherimg">
+          <span id="weathertemp" class="title">23˚C</span>
+          <span id="weathersub" class="subtitle">Sunny</span>
+        </div>
+      </div>
+    </div>
+    
+    
     <!-- ===== [ Settings menu ] =================== -->
     <div class="container" id="settingsContainer">
       <div class="window" id="settingsWindow">
@@ -19,8 +48,11 @@
           <div>
             <div class="separator">General</div>
             <button onclick="switchSetting(this)" class="row active"><i class="fas fa-cog"></i> General</button>
-            <button id="starter" onclick="switchSetting(this)" class="row"><i class="fas fa-image"></i> Wallpaper</button>
-            <button onclick="switchSetting(this)" class="row"><i class="fas fas fa-cloud-sun-rain"></i> Weather</button>
+            <button onclick="switchSetting(this)" class="row"><i class="fas fa-calendar-clock"></i> Time & Date</button>
+            <button onclick="switchSetting(this)" class="row"><i class="fas fa-image"></i> Wallpaper</button>
+            <button onclick="switchSetting(this)" class="row"><i class="fas fa-cloud-sun-rain"></i> Weather</button>
+            <div class="separator">Appearance</div>
+            <button id="starter" onclick="switchSetting(this)" class="row"><i class="fas fa-gear-complex-code"></i> Advanced</button>
             <button onclick="switchSetting(this)" class="row"><i class="fas fa-palette"></i> Customization</button>
             <div class="separator">App</div>
             <button onclick="switchSetting(this)" class="row"><i class="fas fa-info-circle"></i> App Info</button>
@@ -31,8 +63,7 @@
         <!-- ===== [ Menus ] =================== -->
         <div class="menus" id="settingsMenus">
           <div class="menu activeMenu" menu="General">
-            <h1>Time/date</h1>
-            <button class="toggle" setting="24hrclock"></button> Use 24-hour clock
+            
           </div>
           <div class="menu" menu="Wallpaper">
             <div id="mainwpmenu">
@@ -80,6 +111,7 @@
                   <span class="overlay">Minimalism</span>
                 </div>
               </div>
+              <br><button class="toggle" setting="autoshuffle" onclick="uas();"></button> Autoshuffle every <input placeholder="10" type="number" setting="shuffleinterval"> minutes<br>
               <h1>Nature <flag>FEATURED</flag></h1>
               <div class="feed" id="naturefeed"></div>
               <h1>City <flag>FEATURED</flag></h1>
@@ -88,6 +120,7 @@
             <div id="wpsub" class="hide">
               <button onclick="document.getElementById('mainwpmenu').classList.remove('hide');this.parentElement.classList.add('hide')"><i class="fas fa-arrow-left"></i> Back</button>
               <button onclick="document.getElementById('wpsubfeed').innerHTML='';loadUsImages(cc,'wpsubfeed',24);"><i class="fas fa-rotate-right"></i> Refresh</button>
+              <button onclick="autoShuffle(cc)"><i class="fas fa-sparkles"></i> Autorotate</button>
               <h1 id="wpsubtitle"></h1>
               <div class="feed" id="wpsubfeed">
 
@@ -95,15 +128,53 @@
             </div>
           </div>
           <div class="menu" menu="Weather">
-            <input type="text" setting="weatherloc" placeholder="Toronto"> Weather location 
-            <sinfo>City, Latitude and Longitude, IP address, Canada/US postal code</sinfo>
+            <h1>Weather</h1>
+            <button class="toggle" setting="usecelsius"></button> Use ˚C over ˚F<br>
+            <button class="toggle" setting="usefeelslike"></button> Use "Feels like" temperature over actual temperature<br>
+            <div id="newapi">
+              Weather location: <input type="text" setting="weatherloc" placeholder="Location">
+              <button id="fw" onClick="fetchWeather();"><i class="fas fa-rotate-right"></i></button><br>
+              <sinfo>Accepts: City name, US/CAN/UK postal codes, IP address, Metar, or Airport code</sinfo>
+              <i class="fas fa-location-dot" style="width:22px;text-align: center;"></i> <span id="weatherlocation">No location found</span>
+              <br>
+              <div style="display:flex;gap:5px;"><img id="weatherprevimg" width="22" height="22"> <span id="weatherprevtemp">-˚C</span> - <span id="weatherprevdesc">No data</span></div>
+            </div>
+            <div id="legacyapi">
+              <h1>Location</h1>
+              Latitude and Longitude: <input type="text" setting="weatherlat" placeholder="Latitude">, <input type="text" setting="weatherlong" placeholder="Longitude">
+              <sinfo>Use the search bar below if you don't know your location's coordinates</sinfo>
+              <br>Or find lat/long of city: <input oninput="qws()" value="" type="text" id="weathersearch" placeholder="Search location">
+              <div id="weathersearchresults">
+              </div>
+            </div>
+
           </div>
-          
+          <div class="menu" menu="Time & Date">
+            <h1>Time</h1>
+            <div id="timepreview">
+              <div class="time">
+                <tih>12</tih>
+                <ts>:</ts>
+                <tim>36</tim>
+                <ts id="secsep">:</ts>
+                <tis>13</tis>
+                <tia> PM</tia>
+              </div>
+            </div>
+            <button class="toggle" setting="clock24"></button> Use 24-hour clock<br>
+            <button class="toggle" setting="showampm"></button> Show AM/PM<br>
+            <button class="toggle" setting="showseconds"></button> Show seconds<br>
+            <button class="toggle" setting="flashsep"></button> Flash separators<br>
+          </div>
+          <div class="menu" menu="Advanced">
+            <h1>Advanced settings</h1>
+            <button class="toggle" setting="legacyapi"></button> Use legacy weather API (open-meteo)<br>
+          </div>
           <div class="menu" menu="Customization">
             <h1>Colour</h1>
-            Theme colour: <input type="color" setting="theme"><br>
-            <button class="toggle" setting="bgcol"></button> Theme affects background<br>
-            <button class="toggle" setting="lightmode"></button> Light mode <flag>DANGER</flag>
+            <!-- Theme colour: <input type="color" setting="theme"><br>
+            <button class="toggle" setting="bgcol"></button> Theme affects background<br> -->
+            <button class="toggle" setting="darkmode"></button> Dark mode
             <h1>Fonts</h1>
             Interface font: <input type="text" setting="font"><br>
             Code font: <input type="text" setting="codefont"><br>
